@@ -25,6 +25,26 @@ public class UI {
         System.out.println("2.Log in");
         System.out.println("3.System Admin");
         System.out.println("4.Exit");
+
+        Scanner input = new Scanner(System.in);
+        int choice = input.nextInt();
+        switch (choice) {
+            case 1:
+               status = "sign up";
+               break;
+            case 2:
+                status = "log in";
+                break;
+            case 3:
+                status = "system admin";
+                break;
+            case 4:
+                status = "exit";
+                break;
+            default:
+                System.out.println("Invalid input");
+                TimeUnit.SECONDS.sleep(2);
+        }
     }
 
     public void signUp(BankingSystem bankingSystem) throws IOException, InterruptedException {
@@ -50,6 +70,8 @@ public class UI {
             System.out.println("user created.");
         } else
             System.out.println("user already exists.");
+
+        TimeUnit.SECONDS.sleep(2);
         status = "main menu";
     }
 
@@ -62,13 +84,42 @@ public class UI {
         System.out.print("Password: ");
         String password = input.next();
         bankingSystem.login(id, password);
+
+        TimeUnit.SECONDS.sleep(2);
         status = "user menu";
+    }
+
+    public void userMenu(BankingSystem bankingSystem) throws IOException, InterruptedException{
+        new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+        System.out.println("1.Existing accounts");
+        System.out.println("2.Add new account");
+        System.out.println("3.Log out");
+
+        Scanner input = new Scanner(System.in);
+        int choice = input.nextInt();
+        switch (choice) {
+            case 1:
+                status = "existing accounts";
+                break;
+            case 2:
+                status = "add new account";
+                break;
+            case 3:
+                User user = bankingSystem.findLoggedUser();
+                user.setLogged(false);
+                status = "main menu";
+                break;
+            default:
+                System.out.println("Invalid input.");
+                TimeUnit.SECONDS.sleep(2);
+        }
     }
 
     public Account existingAccounts(BankingSystem bankingSystem) throws IOException, InterruptedException{
         new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
         User user = bankingSystem.findLoggedUser();
         user.printAllAvailableAccounts();
+
         Scanner input = new Scanner(System.in);
         int accountNum = input.nextInt();
         if (accountNum < 1 || accountNum > user.numberOfAccounts()) {
@@ -164,6 +215,7 @@ public class UI {
             user.addAccount(account);
             TimeUnit.SECONDS.sleep(2);
         }
+        status = "user menu";
     }
 
     public void systemAdmin(BankingSystem bankingSystem) throws IOException, InterruptedException{
