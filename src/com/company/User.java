@@ -13,6 +13,7 @@ public class User {
     private boolean isLogged;
 
     public User(String firstName, String lastName, String id, String password) {
+        accountList = new ArrayList<Account>();
         this.firstName = firstName;
         this.lastName = lastName;
         this.id = id;
@@ -22,6 +23,7 @@ public class User {
     }
 
     public User(String firstName, String lastName, String id, String password, boolean isAdmin) {
+        accountList = new ArrayList<Account>();
         this.firstName = firstName;
         this.lastName = lastName;
         this.id = id;
