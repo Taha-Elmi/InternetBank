@@ -125,18 +125,25 @@ public class UI {
         new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
         User user = bankingSystem.findLoggedUser();
         user.printAllAvailableAccounts();
+        System.out.println("0.back");
 
         Scanner input = new Scanner(System.in);
         int accountNum = input.nextInt();
+        if (accountNum == 0)
+            return null;
         if (accountNum < 1 || accountNum > user.numberOfAccounts()) {
             System.out.println("Invalid input");
             TimeUnit.SECONDS.sleep(2);
-            return existingAccounts(bankingSystem);
+            return null;
         }
         return user.getAccount(accountNum);
     }
 
     public void accountMenu(BankingSystem bankingSystem, Account account) throws IOException, InterruptedException{
+        if (account == null) {
+            status = "user menu";
+            return;
+        }
         new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
         System.out.println("Logged into account.\n" +
                 "1.Withdrawal\n" +
