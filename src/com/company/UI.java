@@ -36,7 +36,7 @@ public class UI {
                 status = "log in";
                 break;
             case 3:
-                status = "system admin";
+                status = "system admin log in";
                 break;
             case 4:
                 status = "exit";
@@ -99,7 +99,8 @@ public class UI {
         int choice = input.nextInt();
         switch (choice) {
             case 1:
-                status = "existing accounts";
+                status = "account menu";
+                accountMenu(bankingSystem, existingAccounts(bankingSystem));
                 break;
             case 2:
                 status = "add new account";
@@ -171,13 +172,12 @@ public class UI {
                 break;
             case 4:
                 System.out.println(account.getBalance());
+                TimeUnit.SECONDS.sleep(2);
                 break;
             case 5:
-                user.setLogged(false);
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
                 System.out.println("Logged out of account.");
                 TimeUnit.SECONDS.sleep(2);
-                setStatus("existing accounts");
+                setStatus("user menu");
                 break;
             default:
                 System.out.println("Invalid input");
@@ -218,7 +218,7 @@ public class UI {
         status = "user menu";
     }
 
-    public void systemAdmin(BankingSystem bankingSystem) throws IOException, InterruptedException{
+    public void systemAdminLogin(BankingSystem bankingSystem) throws IOException, InterruptedException{
         new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
         System.out.print("Enter ID: ");
         Scanner input = new Scanner(System.in);
@@ -227,16 +227,22 @@ public class UI {
         String password = input.next();
         if (!bankingSystem.adminLogin(id, password)) {
             TimeUnit.SECONDS.sleep(2);
-            systemAdmin(bankingSystem);
+            systemAdminLogin(bankingSystem);
             return;
         }
         TimeUnit.SECONDS.sleep(2);
-
         new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
         System.out.println("1.display users\n" +
                 "2.display accounts\n" +
                 "3.remove user\n" +
-                "4.remove account");
+                "4.remove account\n" +
+                "5.log out");
+
+        status = "system admin menu";
+    }
+
+    public void systemAdminMenu(BankingSystem bankingSystem) throws IOException, InterruptedException{
+        Scanner input = new Scanner(System.in);
         int choice = input.nextInt();
 
         switch (choice) {
@@ -248,7 +254,7 @@ public class UI {
                 break;
             case 3:
                 System.out.print("Enter user's ID: ");
-                id = input.next();
+                String id = input.next();
                 User user = bankingSystem.findUser(id);
                 if (user == null)
                     System.out.println("User doesn’t exist.");
@@ -264,8 +270,45 @@ public class UI {
                 else
                     bankingSystem.removeAccount(account);
                 break;
+            case 5:
+                bankingSystem.findLoggedUser().setLogged(false);
+                status = "main menu";
+                break;
             default:
                 System.out.println("Invalid input.");
+        }
+    }
+
+    public void menuLoop(BankingSystem bankingSystem) throws IOException, InterruptedException{
+        switch (status) {
+            case "main menu":
+                menu();
+                break;
+            case "sign up":
+                signUp(bankingSystem);
+                break;
+            case "log in":
+                logIn(bankingSystem);
+                break;
+            case "user menu":
+                userMenu(bankingSystem);
+                break;
+            case "account menu":
+                accountMenu(bankingSystem, existingAccounts(bankingSystem));
+                break;
+            case "add new account":
+                addNewAccount(bankingSystem);
+                break;
+            case "system admin log in":
+                systemAdminLogin(bankingSystem);
+                break;
+            case "system admin menu":
+                systemAdminMenu(bankingSystem);
+                break;
+            case "exit":
+                break;
+            default:
+                System.out.println("An error occurred");
         }
     }
 }
