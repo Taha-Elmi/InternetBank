@@ -27,7 +27,7 @@ public class BankingSystem {
         users.add(user);
     }
 
-    public void login(String id, String password) {
+    public boolean login(String id, String password) {
         User temp = null;
         boolean isFound = false;
         for (User user : users) {
@@ -40,14 +40,16 @@ public class BankingSystem {
 
         if (!isFound) {
             System.out.println("user doesn't exists or password is incorrect.");
-            return;
+            return false;
         }
 
         if (temp.getPassword().equals(password)) {
             System.out.println("Logged in.");
             temp.setLogged(true);
+            return true;
         } else {
             System.out.println("user doesn't exists or password is incorrect.");
+            return false;
         }
     }
 

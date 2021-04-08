@@ -83,10 +83,15 @@ public class UI {
         String id = input.next();
         System.out.print("Password: ");
         String password = input.next();
-        bankingSystem.login(id, password);
+        if (bankingSystem.login(id, password)) {
+            TimeUnit.SECONDS.sleep(2);
+            status = "user menu";
+        } else {
+            TimeUnit.SECONDS.sleep(2);
+            status = "main menu";
+        }
 
-        TimeUnit.SECONDS.sleep(2);
-        status = "user menu";
+
     }
 
     public void userMenu(BankingSystem bankingSystem) throws IOException, InterruptedException{
