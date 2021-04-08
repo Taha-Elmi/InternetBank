@@ -239,7 +239,7 @@ public class UI {
         String password = input.next();
         if (!bankingSystem.adminLogin(id, password)) {
             TimeUnit.SECONDS.sleep(2);
-            systemAdminLogin(bankingSystem);
+            status = "main menu";
             return;
         }
         TimeUnit.SECONDS.sleep(2);
