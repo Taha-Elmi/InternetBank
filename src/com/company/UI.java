@@ -124,6 +124,7 @@ public class UI {
     public Account existingAccounts(BankingSystem bankingSystem) throws IOException, InterruptedException{
         new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
         User user = bankingSystem.findLoggedUser();
+        System.out.println("Enter the account's number.");
         user.printAllAvailableAccounts();
         System.out.println("0.back");
 
