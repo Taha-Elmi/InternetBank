@@ -1,3 +1,3 @@
 # InternetBank
-simple Internet Bank simulator
+simple Internet Bank simulator  
 a mini-project for the AP course
